@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Glider.svg.png</file>
+        <file>PullDownMenu.qml</file>
+        <file>TextComponent.qml</file>
+    </qresource>
+</RCC>
