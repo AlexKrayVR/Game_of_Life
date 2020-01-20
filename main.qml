@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
+import QtQuick.Shapes 1.12
 import ModelWorld 1.0
 Window {
     id:mainWindow
@@ -49,8 +50,8 @@ Window {
 
         secondButton.onClicked: root.delegate=squar
         thirdButton.onClicked: root.delegate=circle
-        fourthButton.onClicked: root.delegate=squar
-        fifthButton.onClicked: root.delegate=squar
+        fourthButton.onClicked: root.delegate=triangle
+        fifthButton.onClicked: root.delegate=star
 
         textFifth: "Star"
         textFourth: "Triangle"
@@ -193,6 +194,82 @@ Window {
         }
     }
 
+    //cell in the form of a triangle
+    Component{
+        id: triangle
+        Rectangle {
+            id:triangleRect
+            width: root.cellWidth
+            height: root.cellHeight
+            border.color: "black"
+            border.width: 1
+            MouseArea{
+                anchors.fill:parent
+                onClicked: {
+                    root.currentIndex = model.index
+                    myModel.changeCellByClick(root.currentIndex)
+                }
+            }
+            Shape {
+                antialiasing: true
+                anchors.fill: parent
+                ShapePath {
+                    fillColor: model.color
+                    startX: triangleRect.width/2; startY: 1
+                    PathLine { x: triangleRect.width-2; y: triangleRect.width-2;  }
+                    PathLine { x: 2; y:  triangleRect.width-2 }
+                    PathLine { x: triangleRect.width/2; y: 1 }
+                }
+            }
+        }
+    }
+    //cell in the form of a star
+    Component{
+        id: star
+        Rectangle {
+            id:starRect
+            width: root.cellWidth
+            height: root.cellHeight
+            border.color: "black"
+            border.width: 1
+            color: "transparent"
+            MouseArea{
+                anchors.fill:parent
+                onClicked: {
+                    root.currentIndex = model.index
+                    myModel.changeCellByClick(root.currentIndex)
+                }
+            }
+            Shape {
+                antialiasing: true
+                anchors.fill: parent
+                ShapePath {
+                    strokeWidth: -1
+                    fillRule: ShapePath.WindingFill
+                    fillColor: model.color
+                    startX: starRect.width/2;
+                    startY: 2
+                    PathLine {
+                        x:starRect.width/2*0.59+starRect.width/2
+                        y:starRect.width/2*0.81+starRect.width/2
+                    }
+                    PathLine {
+                        x:starRect.width/2*0.05
+                        y:starRect.width/2-starRect.width/2*0.3
+                    }
+                    PathLine {
+                        x:starRect.width/2+starRect.width/2*0.95
+                        y:starRect.width/2-starRect.width/2*0.3
+                    }
+                    PathLine {
+                        x:starRect.width/2-starRect.width/2*0.59
+                        y:starRect.width/2+starRect.width/2*0.81
+                    }
+                }
+            }
+        }
+
+    }
     //cell in the form of a square
     Component {
         id: squar
